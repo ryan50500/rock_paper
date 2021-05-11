@@ -1,1 +1,1 @@
-# rock_paper
+project can be found at https://ryan50500.github.io/rock_paper/dist/index.html
