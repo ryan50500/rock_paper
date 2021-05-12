@@ -196,3 +196,52 @@ const updatePersistentData = (winner) => {
     const score = winner === "computer" ? Game.getCpAllTime() : Game.getP1AllTime();
     localStorage.setItem(store, score);
 }
+
+const updateWinnerMessage = (winner) => {
+    if (winner === "tie") return;
+    const message =
+        winner === "computer"
+            ? "🤖 Computer wins! 🤖"
+            : "🏆🔥 You Win! 🔥🏆";
+    const p1msg = document.getElementById("p1msg");
+    p1msg.textContent = message;
+}
+
+const displayComputerChoice = (choice) => {
+    const square = document.getElementById("cp_paper");
+    createGameImage(choice, square);
+}
+
+const askUserToPlayAgain = () => {
+    const playAgain = document.getElementById("playAgain");
+    playAgain.classList.toggle("hidden");
+    playAgain.focus();
+}
+
+const resetBoard = () => {
+    const gameSquares = document.querySelectorAll(".gameboard div");
+    gameSquares.forEach(el => {
+        el.className = "gameboard__square";
+    });
+    const cpSquares = document.querySelectorAll(".computerBoard .gameboard__square");
+    cpSquares.forEach(el => {
+        if (el.firstElementChild) el.firstElementChild.remove();
+        if (el.id === "cp_rock") createGameImage("rock", el);
+        if (el.id === "cp_paper") createGameImage("paper", el);
+        if (el.id === "cp_scissors") createGameImage("scissors", el);
+    });
+    document.getElementById("p1msg").textContent = "Player One Chooses...";
+    document.getElementById("cpmsg").textContent = "Computer Chooses...";
+    const ariaResult = document.getElementById("playAgain");
+    ariaResult.ariaLabel = "Player One Chooses";
+    document.getElementById("p1msg").focus();
+    document.getElementById("playAgain").classList.toggle("hidden");
+    Game.endGame();
+}
+
+const createGameImage = (icon, appendToElement) => {
+    const image = document.createElement("img");
+    image.src = `img/${icon}.png`;
+    image.alt = icon;
+    appendToElement.appendChild(image);
+}
